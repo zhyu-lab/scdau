@@ -1,0 +1,12 @@
+einops==0.8.0
+timm==1.0.12
+pandas==2.2.3
+numpy==1.23.4
+scikit-learn==1.6.0
+matplotlib==3.9.2
+blobfile==3.0.0
+mpi4py==3.1.4
+scanpy==1.10.3
+configs==3.0.3
+episcanpy==0.3.2
+
