@@ -211,7 +211,9 @@ def main():
     with torch.no_grad():
         zx, zy, z_x0, z_y0, z_x_a, z_y_a, zxy = dae.encoder(rna_tr, adt_tr)
         zx_t, zy_t, z_x0_t, z_y0_t, z_x_a_t, z_y_a_t, zxy_t = dae.encoder(rna_te, adt_te)
-
+        
+    image_size = zx.shape[1]
+    args.image_size = image_size
     enc_dims = [256, 128, 64, 32]
     dec_dims = [64, 128, 256, 512]
 
@@ -308,7 +310,7 @@ def main():
     ADT_data_tensor_C_cpu = adt_train_tensor.cpu().detach().numpy()
 
 
-    output_path = f"{args.result_path}/pr_data/{args.d}"
+    output_path = f"{args.result_path}/pr_data/{args.fold}"
     print(output_path)
     
     pd.DataFrame(G_R_R_cpu).to_csv(f'{output_path}/A2R.csv', index=False)
@@ -323,8 +325,8 @@ def main():
     ap = calculate_pearson_correlation(ADT_data_tensor_C_cpu, G_A_D_cpu)
     print(f"Pearson correlation coefficient of ADT: {ap}")
 
-    output_file = f"{args.result_path}/{args.d}/clustering_nc{args.d}.txt"
-    picture_save_dir = f"{args.result_path}/{args.d}"
+    output_file = f"{args.result_path}/{args.fold}/clustering_nc{args.d}.txt"
+    picture_save_dir = f"{args.result_path}/{args.fold}"
     with open(output_file, 'w') as f:
 
         f.write("Metrics Calculation Results\n")
@@ -364,6 +366,7 @@ def create_argparser():
         dae_epochs=120,
         dae_batch_size=32,
         unet_epochs=20,
+        image_size = 64,
 
         # common paras
         fold=1,
